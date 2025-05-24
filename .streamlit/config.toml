@@ -1,0 +1,7 @@
+[theme]
+base="light"
+primaryColor="#0077B6"               # color principal (botones, highlights)
+backgroundColor="#F0F4F8"            # fondo de la app
+secondaryBackgroundColor="#FFFFFFCC" # fondo de barras laterales y contenedores
+textColor="#0A0F1E"                  # color de texto principal
+font="sans serif"                    # fuente limpia
