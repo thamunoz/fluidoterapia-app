@@ -9,54 +9,67 @@ st.markdown(f"# **{title}**", unsafe_allow_html=True)
 st.markdown(
     """
     <style>
-    /* Fondo con gradiente suave y moderno */
+    /* Fondo con gradiente pastel suave */
     .stApp {
-        background: linear-gradient(160deg, #f0f4f8 0%, #d9e2ec 50%, #bcccdc 100%);
+        background: linear-gradient(145deg, #a1c4fd 0%, #c2e9fb 100%);
     }
-    /* Sidebar con sombra pronunciada */
+    /* Contenedor principal suavizado */
+    .main .block-container {
+        background-color: rgba(255,255,255,0.85);
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    /* Sidebar con sombra suave */
     .sidebar .sidebar-content {
         background-color: #ffffffee;
         padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     }
-    /* Agrupar entradas en tarjetas con sombra */
-    .stExpanderContent {
-        background-color: #ffffffee;
-        border-radius: 8px;
-        padding: 10px;
+    /* Expander como tarjeta */
+    .stExpander {
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        border-radius: 8px;
     }
-    /* Inputs y selects con sombra suave */
-    input, select {
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    /* Inputs y selects con sombras internas */
+    input, select, .stNumberInput>div>div, .stSelectbox>div>div {
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
         border-radius: 6px;
         border: 1px solid #cbd2d9;
     }
-    /* Botones primarios */
+    /* Botones primarios estilizados */
     .stButton>button {
         background-color: #0077b6;
-        color: #ffffff;
+        color: white;
         border: none;
         border-radius: 6px;
-        padding: 8px 16px;
+        padding: 10px 20px;
         font-weight: 600;
         transition: background-color 0.2s ease, transform 0.1s ease;
     }
     .stButton>button:hover {
         background-color: #005f86;
-        transform: translateY(-1px);
+        transform: translateY(-2px);
     }
-    /* Tarjetas para métricas con sombra marcada */
+    /* Métricas en tarjetas interactivas */
     .stMetric {
         background-color: #ffffffdd;
         border-radius: 10px;
-        padding: 12px;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        padding: 14px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.1);
         transition: transform 0.2s ease;
+        color: #333333;
     }
     .stMetric:hover {
-        transform: scale(1.05);
+        transform: scale(1.04);
+    }
+    /* Color de los valores y deltas en metric */
+    .stMetric .value {
+        color: #000000 !important;
+    }
+    .stMetric .delta {
+        color: #0077b6 !important;
     }
     </style>
     """,
@@ -72,8 +85,7 @@ with st.sidebar.expander('Datos del Paciente', expanded=True):
     sens_loss = st.number_input('Pérdidas sensibles (ml)', min_value=0.0, format='%.1f')
     insens_loss = st.number_input('Pérdidas insensibles (ml)', min_value=0.0, format='%.1f')
 with st.sidebar.expander('Venoclisis', expanded=False):
-    venous_set = st.selectbox('Tipo de Venoclisis',
-                              ['Macrogoteo (20 gtt/ml)', 'Macrogoteo (10 gtt/ml)', 'Microgoteo (60 gtt/ml)'])
+    venous_set = st.selectbox('Tipo de Venoclisis', ['Macrogoteo (20 gtt/ml)', 'Macrogoteo (10 gtt/ml)', 'Microgoteo (60 gtt/ml)'])
     if '10' in venous_set:
         drop_factor = 10
     elif '20' in venous_set:
@@ -111,14 +123,11 @@ def calculate():
 # --- Botón y resultados ---
 if st.sidebar.button('Calcular'):
     m, d, b, sl, il, tot, mlh, mlm, dpm, dps, spd = calculate()
-    # Mostrar métricas
     st.subheader('Resultados Rápidos')
     col1, col2, col3 = st.columns(3)
     col1.metric('Mantenimiento (ml)', f'{m:.0f}')
     col2.metric('Déficit (ml)', f'{d:.0f}')
     col3.metric('Total (ml)', f'{tot:.0f}')
-    
-    # Detalle en tarjetas
     st.subheader('Detalle de Tasas e Intervalos')
     dt1, dt2 = st.columns(2)
     dt1.metric('ml/h', f'{mlh:.1f}')
