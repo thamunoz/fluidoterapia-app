@@ -5,13 +5,7 @@ title = 'Fluidoterapia Caninos y Felinos'
 st.set_page_config(page_title=title, layout='wide')
 st.markdown(f"# **{title}**", unsafe_allow_html=True)
 
-# --- Estilos personalizados ---
-st.markdown(
-    """
-    <style>
-    /* Fondo con gradiente pastel suave */
-    .stApp {
-        background: linear-gradient(145deg, #a1c4fd 0%, #c2e9fb 100%);
+;
     }
     /* Contenedor principal suavizado */
     .main .block-container {
